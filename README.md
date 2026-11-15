@@ -29,9 +29,9 @@ HTML pregled bančnih obvestil za iPhone. **Brez spletne baze.** GitHub Pages go
 
 Kot parameter skripta Intesa-Shrani pošlji naslednji testni primer:
 
-    Odliv 2,78 EUR
-    BANKA INTESA SANPAOLO D.D.: VI-LIDL SLOVENIJA D O O K, NOVO MESTO
+    Odliv 1,23 EUR
+    BANKA INTESA SANPAOLO D.D.: VI-PRIMER TRGOVINA, PRIMER KRAJA
 
-Nato zaženi Intesa-Pregled. Pričakovani rezultat: Lidl in 2,78 EUR. Testni zapis ni prava transakcija, zato ga ne zamenjaj z dejanskim bančnim prometom.
+Nato zaženi Intesa-Pregled. Pričakovani rezultat: Primer Trgovina in 1,23 EUR. Testni zapis ni prava transakcija, zato ga ne zamenjaj z dejanskim bančnim prometom.
 
 Ni mogoče zagotoviti popolnega zajema brez testa dejanskih potisnih obvestil in nastavitev iOS.

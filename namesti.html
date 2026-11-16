@@ -21,7 +21,7 @@
 </div>
 <p>Po namestitvi bo <b>Intesa-Pregled</b> prikazoval lokalne transakcije. Pred popolnim zaupanjem v avtomatiko preizkusi eno dejansko obvestilo, tudi ko je iPhone zaklenjen.</p>
 <script>
-document.getElementById("copy").addEventListener("click",async function(){
+let preparedCode="";\nconst copyButton=document.getElementById("copy");\ncopyButton.disabled=true;copyButton.textContent="Pripravljam kodo …";\nfetch("https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js",{cache:"no-store"})\n.then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.text()})\n.then(code=>{if(!code.includes("const names=[")||code.length<400)throw new Error("Nepričakovana koda");preparedCode=code;copyButton.disabled=false;copyButton.textContent="1. Kopiraj namestitveno kodo"})\n.catch(()=>{copyButton.textContent="Kodo odpri prek spodnje povezave";document.getElementById("status").textContent="Samodejni prenos ni uspel. Spodaj je povezava za ročno kopiranje."});\ndocument.getElementById("copy").addEventListener("click",function(){
 const status=document.getElementById("status");
 try{
  const u="https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js";

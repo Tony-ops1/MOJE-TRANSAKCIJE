@@ -2,6 +2,11 @@
 
 HTML pregled bančnih obvestil za iPhone. **Brez spletne baze.** GitHub Pages gosti samo javni vmesnik, bančne transakcije pa Scriptable shranjuje lokalno na iPhonu.
 
+## Enostavna namestitev
+
+Na iPhonu v Safariju odpri https://tony-ops1.github.io/MOJE-TRANSAKCIJE/namesti.html .
+Namestitvena stran omogoča kopiranje enega skripta, ki v Scriptable namesti vse tri skripte. Samo namestitev na telefon moraš potrditi v Scriptable; nobena spletna stran ne more brez dovoljenja namestiti Bližnjic ali spreminjati nastavitev iOS.
+
 ## Objava in uporaba
 
 1. V GitHub repozitoriju odpri Settings → Pages.

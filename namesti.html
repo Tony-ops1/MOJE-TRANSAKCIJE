@@ -21,16 +21,26 @@
 </div>
 <p>Po namestitvi bo <b>Intesa-Pregled</b> prikazoval lokalne transakcije. Pred popolnim zaupanjem v avtomatiko preizkusi eno dejansko obvestilo, tudi ko je iPhone zaklenjen.</p>
 <script>
-let preparedCode="";\nconst copyButton=document.getElementById("copy");\ncopyButton.disabled=true;copyButton.textContent="Pripravljam kodo …";\nfetch("https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js",{cache:"no-store"})\n.then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.text()})\n.then(code=>{if(!code.includes("const names=[")||code.length<400)throw new Error("Nepričakovana koda");preparedCode=code;copyButton.disabled=false;copyButton.textContent="1. Kopiraj namestitveno kodo"})\n.catch(()=>{copyButton.textContent="Kodo odpri prek spodnje povezave";document.getElementById("status").textContent="Samodejni prenos ni uspel. Spodaj je povezava za ročno kopiranje."});\ndocument.getElementById("copy").addEventListener("click",function(){
+const button=document.getElementById("copy");
 const status=document.getElementById("status");
-try{
- const u="https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js";
- const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);
- const code=await r.text();
- if(!code.includes("const names=[")||code.length<400)throw new Error("Nepričakovana koda");
- await navigator.clipboard.writeText(code);
- status.textContent="Kopirano! Zdaj odpri Scriptable, prilepi kodo in zaženi namestitev.";
-}catch(e){status.textContent="Kopiranje ni uspelo. Uporabi spodnjo povezavo za ročno kopiranje."}
+let preparedCode="";
+button.disabled=true;
+button.textContent="Pripravljam kodo …";
+fetch("https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js",{cache:"no-store"})
+.then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.text()})
+.then(code=>{
+  if(!code.includes("const names=[")||code.length<400)throw new Error("Nepričakovana koda");
+  preparedCode=code;button.disabled=false;
+  button.textContent="1. Kopiraj namestitveno kodo";
+}).catch(()=>{
+  button.textContent="Kodo odpri prek spodnje povezave";
+  status.textContent="Samodejni prenos ni uspel. Spodaj je povezava za ročno kopiranje.";
+});
+button.addEventListener("click",()=>{
+  if(!preparedCode)return;
+  navigator.clipboard.writeText(preparedCode)
+    .then(()=>{status.textContent="Kopirano! Zdaj odpri Scriptable, prilepi kodo in zaženi namestitev."})
+    .catch(()=>{status.textContent="Kopiranje ni uspelo. Uporabi spodnjo povezavo za ročno kopiranje."});
 });
 </script>
 </main></body></html>

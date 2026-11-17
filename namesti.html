@@ -1,46 +1,13 @@
-<!doctype html>
-<html lang="sl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1727"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src https://raw.githubusercontent.com; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
-<title>Namesti – Moje transakcije</title>
-<style>body{font-family:-apple-system,system-ui,sans-serif;background:#0b1727;color:#eff6ff;margin:0;padding:32px 18px}main{max-width:580px;margin:auto}a{color:#93d3ff}h1{font-size:28px;letter-spacing:-.03em}p{line-height:1.6;color:#b8cde3}ol{padding-left:25px;line-height:1.75}li{margin:10px 0}.card{border:1px solid #30516a;border-radius:22px;padding:20px;background:#152b42;margin-top:20px}button,.button{display:block;width:100%;box-sizing:border-box;text-align:center;padding:15px 12px;border:0;border-radius:14px;font-size:17px;font-weight:700;background:#3da1e8;color:#001c30;text-decoration:none;cursor:pointer;margin:12px 0}#status{min-height:24px;color:#b7e7bb}small{color:#a9bdcf;line-height:1.6}</style>
-</head><body><main>
-<a href="./">← Moje transakcije</a><h1>Namestitev na iPhone</h1>
-<p>Pripravljen je namestitveni skript, ki v Scriptable namesti tri skripte za tvojo lokalno evidenco. Na GitHub se ne pošiljajo transakcije.</p>
-<div class="card">
-<ol>
-<li>Namesti <a href="https://apps.apple.com/app/scriptable/id1405459188">Scriptable</a>, če ga še nimaš.</li>
-<li>Pritisni <b>Kopiraj namestitveno kodo</b>.</li>
-<li>Pritisni <b>Odpri Scriptable</b> in prilepi kopirano kodo v novi skript.</li>
-<li>Skriptu daj ime <b>Intesa-Namesti</b> in ga enkrat zaženi. Potrdi namestitev treh skriptov.</li>
-<li>V Bližnjicah nastavi <b>Notification → Intesa Sanpaolo</b>, da zažene <b>Intesa-Shrani</b> in mu preda naslov ter besedilo obvestila.</li>
-</ol>
-<button id="copy">1. Kopiraj namestitveno kodo</button>
-<a class="button" href="scriptable:///add">2. Odpri nov skript v Scriptable</a>
-<p id="status" aria-live="polite"></p>
-<small>Če kopiranje ne uspe, <a href="https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js">odpri kodo</a> in jo ročno kopiraj.</small>
-</div>
-<p>Po namestitvi bo <b>Intesa-Pregled</b> prikazoval lokalne transakcije. Pred popolnim zaupanjem v avtomatiko preizkusi eno dejansko obvestilo, tudi ko je iPhone zaklenjen.</p>
-<script>
-const button=document.getElementById("copy");
-const status=document.getElementById("status");
-let preparedCode="";
-button.disabled=true;
-button.textContent="Pripravljam kodo …";
-fetch("https://raw.githubusercontent.com/Tony-ops1/MOJE-TRANSAKCIJE/main/scriptable/Intesa-Namesti.js",{cache:"no-store"})
-.then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.text()})
-.then(code=>{
-  if(!code.includes("const names=[")||code.length<400)throw new Error("Nepričakovana koda");
-  preparedCode=code;button.disabled=false;
-  button.textContent="1. Kopiraj namestitveno kodo";
-}).catch(()=>{
-  button.textContent="Kodo odpri prek spodnje povezave";
-  status.textContent="Samodejni prenos ni uspel. Spodaj je povezava za ročno kopiranje.";
-});
-button.addEventListener("click",()=>{
-  if(!preparedCode)return;
-  navigator.clipboard.writeText(preparedCode)
-    .then(()=>{status.textContent="Kopirano! Zdaj odpri Scriptable, prilepi kodo in zaženi namestitev."})
-    .catch(()=>{status.textContent="Kopiranje ni uspelo. Uporabi spodnjo povezavo za ročno kopiranje."});
-});
-</script>
+<!doctype html><html lang="sl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#091727"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'"><title>Poveži obvestila – Moje transakcije</title><style>body{font-family:-apple-system,system-ui,sans-serif;background:#091727;color:#eef7ff;margin:0;padding:28px 17px}main{max-width:580px;margin:auto}a{color:#a4dbff}h1{font-size:27px;letter-spacing:-.035em}h2{font-size:19px;margin-top:25px}p,li{color:#bed0e2;line-height:1.6}li{margin:13px 0}.panel{border:1px solid #315373;background:#142d46;border-radius:20px;padding:19px;margin:18px 0}button{font-size:16px;border-radius:12px;padding:14px;border:0;color:#061b2a;background:#70c8fb;font-weight:700;width:100%}code{font-size:12px;color:#c5eeff;overflow-wrap:anywhere}.warn{font-size:13px;color:#ffc6a7}.small{font-size:12px;color:#a5bcd0}</style></head><body><main>
+<a href="./">← Nazaj v aplikacijo</a><h1>Poveži obvestila Intese</h1>
+<p>Ne potrebuješ Scriptable ali spletne baze. Bližnjica posreduje besedilo obvestila spletni aplikaciji v Safariju, ta pa ga sama razvrsti in shrani.</p>
+<div class="panel"><h2>Na iPhonu z iOS 27</h2><ol>
+<li>Odpri <strong>Bližnjice (Shortcuts)</strong> in ustvari avtomatizacijo <b>Notification (Obvestilo)</b> za <b>Intesa Sanpaolo</b>.</li>
+<li>Dodaj <b>URL Encode (Kodiraj URL)</b>. Kot vhod izberi spremenljivko <b>Notification → Body</b> (vsebina obvestila).</li>
+<li>Dodaj <b>Text (Besedilo)</b>. Vanj prilepi spodnjo osnovo povezave in takoj za enačaj vstavi spremenljivko <b>URL Encoded Text</b>.</li>
+<li>Dodaj <b>Open URLs (Odpri URL-je)</b> in izberi rezultat dejanja Text. Vklopi samodejno izvajanje, kjer je to dovoljeno.</li>
+<li>Ob naslednjem obvestilu preveri, ali se Safari odpre in ali se je transakcija dodala v <a href="./">Moje transakcije</a>.</li>
+</ol><code id="link">https://tony-ops1.github.io/MOJE-TRANSAKCIJE/#tx=</code><p><button id="copy">Kopiraj osnovo povezave</button></p><p id="feedback" class="small"></p></div>
+<div class="panel"><h2>Kaj moraš vedeti</h2><p>Github Pages sam ne more brati obvestil iPhona. Bližnjica mora odpreti Safari, da lahko stran shrani transakcijo. To morda ne uspe pri zaklenjenem telefonu in ni povsem neopazna avtomatizacija.</p><p>Transakcije so shranjene samo v <b>lokalni shrambi Safarija</b>. Dodatek na začetni zaslon lahko uporablja ločeno shrambo; za zdaj uporabljaj Safari. Redno uporabi <b>Shrani kopijo</b>.</p><p class="warn">Sistem še ni preizkušen s tvojimi dejanskimi potisnimi obvestili. Če želiš zajem tudi z zaklenjenim zaslonom brez odpiranja strani, sama GitHub HTML aplikacija za to ni dovolj.</p></div>
+<script>document.getElementById("copy").addEventListener("click",()=>navigator.clipboard.writeText(document.getElementById("link").textContent).then(()=>document.getElementById("feedback").textContent="Kopirano. Prilepi v dejanje Text.").catch(()=>document.getElementById("feedback").textContent="Kopiranje ni uspelo. Označi in kopiraj povezavo."));</script>
 </main></body></html>

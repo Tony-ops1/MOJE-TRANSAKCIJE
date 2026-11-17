@@ -1,42 +1,40 @@
-# Moje transakcije – Intesa Sanpaolo
+# MOJE-TRANSAKCIJE — preprosta HTML evidenca za Inteso
 
-HTML pregled bančnih obvestil za iPhone. **Brez spletne baze.** GitHub Pages gosti samo javni vmesnik, bančne transakcije pa Scriptable shranjuje lokalno na iPhonu.
+GitHub Pages gosti samo **HTML/CSS/JavaScript**. Podatki o transakcijah ostanejo v **lokalni shrambi Safarija** na tvojem iPhonu. Ni spletne baze, Scriptable ni več potreben.
 
-## Enostavna namestitev
+## Odpri aplikacijo
 
-Na iPhonu v Safariju odpri https://tony-ops1.github.io/MOJE-TRANSAKCIJE/namesti.html .
-Namestitvena stran omogoča kopiranje enega skripta, ki v Scriptable namesti vse tri skripte. Samo namestitev na telefon moraš potrditi v Scriptable; nobena spletna stran ne more brez dovoljenja namestiti Bližnjic ali spreminjati nastavitev iOS.
+https://tony-ops1.github.io/MOJE-TRANSAKCIJE/
 
-## Objava in uporaba
+## Samodejni prejem prek iOS 27 Bližnjic
 
-1. V GitHub repozitoriju odpri Settings → Pages.
-2. Nastavi Build and deployment → Deploy from a branch → main → /(root) in shrani.
-3. HTML: https://tony-ops1.github.io/MOJE-TRANSAKCIJE/
-4. Namesti Scriptable na iPhone.
-5. Iz mape scriptable/ kopiraj vse tri skripte v Scriptable in jih poimenuj natanko Intesa-Shrani, Intesa-Pregled in Intesa-Uredi.
-6. V Bližnjicah ustvari avtomatizacijo ob Intesinem obvestilu, če tvoja različica iOS dovoljuje ta sprožilec in dostop do vsebine. Dodaj dejanje Text z naslovom in vsebino obvestila; nato dejanje Scriptable → Run Script, izberi Intesa-Shrani in predaj besedilo kot Parameter. Dovoli izvajanje brez odpiranja aplikacije, če je na voljo.
-7. Za pregled zaženi Intesa-Pregled v Scriptable. Ta prenese samo javno HTML predlogo, doda lokalne podatke v pomnilniku WebView in prikaže evidenco. HTML se lahko uporablja iz lokalnega predpomnilnika, ko je bil prvič uspešno naložen.
-8. Za popravek naziva trgovca uporabi gumb Uredi naziv ali zaženi Intesa-Uredi.
+V aplikaciji odpri **⚙️ Poveži Intesina obvestila** ali stran https://tony-ops1.github.io/MOJE-TRANSAKCIJE/namesti.html .
 
-**Pomembno:** Sama stran GitHub Pages v Safariju ne more prebrati lokalnih podatkov Scriptable in je zato samo prazen javni predogled.
+1. V Bližnjicah dodaj sprožilec **Notification (Obvestilo)** za Intesa Sanpaolo, če ga iPhone omogoča.
+2. Dodaj dejanje **URL Encode** z vhodom **Notification → Body**.
+3. Dodaj dejanje **Text**: `https://tony-ops1.github.io/MOJE-TRANSAKCIJE/#tx=` in takoj za znakom `=` vstavi rezultat prejšnjega dejanja.
+4. Dodaj dejanje **Open URLs** z vhodom Text.
+5. Shrani avtomatizacijo in preizkusi naslednje bančno obvestilo.
 
-## Zasebnost
+HTML stran iz fragmenta URL (`#tx=`) prebere obvestilo, izlušči znesek, vrsto in trgovca, ustvari lokalni zapis, nato fragment takoj odstrani iz naslovne vrstice. Fragment ni poslan strežniku z običajno HTTP zahtevo. **Kljub temu je posredovanje obvestila skozi URL občutljivejše kot izključno lokalen App Intent:** lahko se na kratko pojavi v naslovni vrstici ali zgodovini telefona, zato uporabnik prevzame to omejitev. Ne predajaj PIN-ov ali kod.
 
-- Nikoli ne nalagaj intesa-transakcije.json, intesa-imena.json, bančnih izpiskov, fotografij obvestil ali osebnih podatkov v javni repozitorij.
-- Skripti uporabljajo FileManager.local() in ne shranjujejo finančnih podatkov na GitHub.
-- GitHub lahko vidi obisk javne strani, ne pa lokalno shranjenih transakcij.
-- Ne vstavljaj bančnih podatkov v URL-je.
-- Zajem obvestil je treba preizkusiti na iPhonu tudi med zaklenjenim zaslonom. Vsa obvestila se ne bodo nujno zabeležila.
-- To ni bančni izpisek in ne prikazuje zagotovljeno pravilnega knjiženega stanja.
-- Če je omogočena sistemska varnostna kopija iPhona, se lahko lokalni podatki vključijo vanjo.
+## Omejitve iPhona in zasebnost
 
-## Test
+- **GitHub Pages ne more neposredno brati obvestil ali pisati v lokalno shrambo, ko Safari ni odprt.** Za zapis mora Bližnjica odpreti stran v Safariju. Pri zaklenjenem telefonu iOS to lahko prepreči. Zato ni zagotovljen popolnoma neslišen zajem vsake transakcije.
+- Spletna aplikacija, dodana na začetni zaslon, lahko uporablja *drugo* lokalno shrambo kot Safari. Zaradi enotne evidence uporabljaj **Safari**.
+- Bančna obvestila niso nujno enaka končnim knjiženim transakcijam in ne povedo vedno vseh podatkov. Dvigi ATM niso samodejno izdatki.
+- Če počistiš podatke Safarija, lahko izgubiš evidenco. Uporabi **Shrani kopijo** v HTML aplikaciji in shrani datoteko med datoteke iPhona.
+- Ni bančnega gesla, PIN-a, dostopa do plačevanja ali prenosa podatkov na zunanji strežnik.
+- Ne nalagaj bančnih podatkov v ta javni GitHub repozitorij.
 
-Kot parameter skripta Intesa-Shrani pošlji naslednji testni primer:
+## Kaj je narejeno
 
-    Odliv 1,23 EUR
-    BANKA INTESA SANPAOLO D.D.: VI-PRIMER TRGOVINA, PRIMER KRAJA
+- Prepoznava zneskov, trgovcev (npr. Lidl), kartičnih plačil, bankomatov, nakazil in prilivov.
+- Urejanje naziva trgovca z lokalnim pomnjenjem prihodnjih enakih trgovcev.
+- Mesečni seštevek, filter transakcij, ročni vnos, lepljenje bančnih obvestil.
+- Izvoz in obnova varnostne kopije v JSON.
+- Preprečevanje neposredno podvojenih zapisov.
 
-Nato zaženi Intesa-Pregled. Pričakovani rezultat: Primer Trgovina in 1,23 EUR. Testni zapis ni prava transakcija, zato ga ne zamenjaj z dejanskim bančnim prometom.
+## Stari skripti
 
-Ni mogoče zagotoviti popolnega zajema brez testa dejanskih potisnih obvestil in nastavitev iOS.
+Mapa `scriptable/` vsebuje stare poskusne skripte iz prejšnje različice. **Za novo HTML evidenco jih ni treba namestiti.** Stara Scriptable shramba se ne prenese samodejno v Safari in ni del nove aplikacije.

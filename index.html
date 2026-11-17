@@ -113,7 +113,7 @@ function classify(s,merchant){
  if(/priliv|dobropis|prejet.{0,30}(nakazil|plačil)/.test(t))return "priliv";
  if(/prenos sredstev|med lastnimi|med račun/.test(t))return "prenos";
  if(/pos\b|nakup|plačilo s kartico|placilo s kartico/.test(t))return "pos";
- if(merchant&&(/kartic|transakcij|odliv/.test(t)))return "pos";
+ if(merchant&&(/kartic|transakcij/.test(t)||/(?:VI|MC|MA|VISA|MASTERCARD)\s*[-:]/i.test(s)))return "pos";
  if(/odliv|nakazil|plačilo računa|plačilo predračuna/.test(t))return "odliv";
  if(/kartic|transakcij/.test(t))return "kartica";
  return null;

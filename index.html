@@ -1,85 +1,210 @@
 <!doctype html>
 <html lang="sl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1727">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a182a"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Moje transakcije">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'">
 <title>Moje transakcije</title>
 <style>
-:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:#081525;color:#f0f5ff}
-*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:linear-gradient(150deg,#081525,#0a2032 80%);padding:calc(18px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
-main{max-width:660px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0 25px}
-header small{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:#9ec6d8;font-weight:750}
-h1{font-size:26px;margin:4px 0 0;letter-spacing:-.045em}
-.state{font-size:12px;border:1px solid #2a684e;color:#aaf4d0;background:#163a2c;padding:8px 10px;border-radius:22px;white-space:nowrap}
-.hero{border:1px solid #3466a0;background:linear-gradient(120deg,#194e9d,#1c80c6);padding:22px 20px;border-radius:25px}
-.hero small{color:#e2f0ff}.hero h2{font-size:37px;letter-spacing:-.045em;margin:9px 0 8px;font-variant-numeric:tabular-nums}
-.hero p{margin:0;font-size:12px;color:#d6e7ff;line-height:1.5}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.stat{border:1px solid #284663;border-radius:20px;background:#142b42;padding:17px}
-.stat small{color:#a2c0d7;font-size:12px}
-.stat strong{display:block;font-size:22px;margin-top:9px;font-variant-numeric:tabular-nums}
-section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-h3{margin:0;font-size:19px;letter-spacing:-.025em}
-select{font-family:inherit;font-size:13px;border-radius:11px;border:1px solid #3e627d;background:#18364b;color:white;padding:9px}
-.list{border:1px solid #27465d;background:#0f2437;border-radius:20px;overflow:hidden}
-.item{display:flex;align-items:flex-start;padding:16px 13px;gap:11px;border-bottom:1px solid #25435a}
-.item:last-child{border-bottom:none}.symbol{width:41px;height:41px;border-radius:14px;flex-shrink:0;background:#244761;display:grid;place-items:center;font-size:21px}
-.details{flex:1;min-width:0}.name{font-size:15px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.meta{color:#a7bfd4;font-size:11px;margin-top:6px}
-.edit{font-size:12px;color:#a4e4ff;display:inline-block;margin-top:8px}
-.amount{font-size:14px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:4px}
-.negative{color:#ffb6bd}.positive{color:#96f1bd}
-.empty{padding:34px 22px;text-align:center;color:#a3bfd1;line-height:1.65;font-size:14px}
-.notice{padding:15px;border:1px solid #466378;border-radius:16px;background:#172f43;color:#d5e7f5;font-size:13px;line-height:1.65;margin:15px 0}
-.notice a{color:#a8e4ff}.hint{font-size:12px;line-height:1.55;color:#a4b9cd;margin-top:20px}
-.review{font-size:10px;border:1px solid #b2943e;color:#f3d484;border-radius:99px;padding:2px 5px;white-space:nowrap;margin-left:5px}
+:root{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color-scheme:dark;color:#f3f7fc;background:#091727}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;padding:calc(18px + env(safe-area-inset-top)) 16px calc(42px + env(safe-area-inset-bottom));background:linear-gradient(155deg,#0b223d,#091727 65%)}
+main{max-width:690px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 23px}
+.kicker{font-size:11px;letter-spacing:.13em;color:#9cbaca;font-weight:700}
+h1{margin:4px 0 0;font-size:27px;letter-spacing:-.05em}.status{font-size:12px;color:#acf0cc;background:#173e34;border:1px solid #376c55;border-radius:22px;padding:8px 10px;white-space:nowrap}
+.hero{padding:23px;border-radius:24px;background:linear-gradient(125deg,#1949a0,#157cad);border:1px solid #3576bc}
+.hero small{color:#d0eaff}.hero strong{display:block;margin:8px 0;font-size:38px;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.hero p{font-size:12px;margin:0;color:#e1f0fe}.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:12px 0 27px}
+.stat{background:#112b43;border:1px solid #264761;border-radius:19px;padding:17px}
+.stat small{color:#acc4da;font-size:12px}.stat strong{display:block;margin-top:6px;font-size:22px;font-variant-numeric:tabular-nums}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin:16px 0}
+button,a.action{border:1px solid #3d6684;border-radius:12px;background:#173b56;color:#e8f7ff;padding:11px 13px;font:600 13px -apple-system,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+button.primary,a.primary{background:#308bdb;border-color:#308bdb;color:#06152b}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #95d9ff;outline-offset:3px}
+.banner{background:#113d32;color:#c8fae3;border:1px solid #267b59;padding:12px 14px;border-radius:14px;font-size:13px;margin:12px 0;line-height:1.55}
+.banner.error{background:#493023;border-color:#a1653f;color:#ffe8cf}
+section{margin-top:27px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+h2{margin:0;font-size:19px;letter-spacing:-.03em}select,input,textarea{background:#102d45;color:white;border:1px solid #3e627e;border-radius:11px;padding:11px;font-size:14px;width:100%;font-family:inherit}
+select{width:auto;max-width:50%}.list{border-radius:20px;overflow:hidden;border:1px solid #2e4a63;background:#10263b}
+.item{padding:16px 13px;display:flex;gap:11px;border-bottom:1px solid #244359;align-items:flex-start}
+.item:last-child{border-bottom:0}.symbol{width:41px;height:41px;display:grid;place-items:center;background:#1c435c;border-radius:13px;font-size:20px;flex-shrink:0}
+.details{flex:1;min-width:0}.name{font-weight:700;font-size:15px;overflow-wrap:anywhere}.meta{color:#a1b9ce;font-size:11px;margin-top:6px}.amount{font-weight:750;font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums;margin-top:4px}.negative{color:#ffb9c1}.positive{color:#9befc6}
+.edit{font-size:12px;margin-top:9px;padding:0;background:transparent;border:0;color:#8cdaff;text-decoration:underline}
+.flag{font-size:10px;border:1px solid #b79348;color:#ffe3a3;border-radius:20px;padding:2px 5px;margin-left:4px}
+.empty{color:#b0c9d9;padding:34px 20px;text-align:center;line-height:1.6;font-size:14px}
+.panel{background:#11263a;border:1px solid #33506a;border-radius:19px;padding:17px;margin-top:17px}
+.panel p,details p,li{color:#bdd1e2;font-size:13px;line-height:1.55}
+.panel label{display:block;margin:12px 0 6px;font-size:13px;color:#cbe5f2}
+.panel .actions{margin-bottom:0}
+details{margin-top:25px;padding:16px;border:1px solid #345167;border-radius:17px;background:#0c2438}
+summary{font-size:15px;font-weight:750;cursor:pointer}code{word-break:break-all;color:#acdcff}
+ol{padding-left:19px}li{margin:9px 0}.hint{font-size:12px;color:#9eb9ca;line-height:1.6;margin-top:22px}
 [hidden]{display:none!important}
-</style>
-</head>
+</style></head>
 <body><main>
-<header><div><small>Intesa · zasebna evidenca</small><h1>Moje transakcije</h1></div><span class="state" id="status">Predogled</span></header>
-<div class="notice" id="publicNotice"><strong>Javni HTML predogled.</strong> Na GitHubu ni tvojih bančnih podatkov. Za prikaz transakcij na iPhonu odpri <a href="scriptable:///run/Intesa-Pregled">Intesa-Pregled v Scriptable</a>. Bližnjice zapisujejo transakcije lokalno. <a href="./namesti.html">Namesti na iPhone</a>.</div>
-<div class="hero"><small>Poraba v tem mesecu</small><h2 id="spent">0,00 €</h2><p>Informativna evidenca obvestil, ne uradno bančno stanje.</p></div>
-<div class="stats"><div class="stat"><small>Prilivi</small><strong id="income">0,00 €</strong></div><div class="stat"><small>Dvigi bankomat</small><strong id="atm">0,00 €</strong></div></div>
-<section><div class="sectionhead"><h3>Transakcije <span id="count"></span></h3><select aria-label="Filter transakcij" id="filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"></div></section>
-<p class="hint">Za spremembo imena pritisni »Uredi naziv«. Pravilno ime si aplikacija lahko zapomni za prihodnja plačila istega trgovca. POS plačila, prenosi in dvigi se obravnavajo ločeno; dvig ni sam po sebi strošek.</p>
-<p class="hint">Podatki so lokalni v Scriptable. Javna GitHub stran ne zna brati zasebnih iPhone datotek. Zajem bančnih obvestil mora biti nastavljen in preizkušen posebej.</p>
-<!--INTESA_DATA_SLOT-->
+<header><div><div class="kicker">INTESA · LOKALNA EVIDENCA</div><h1>Moje transakcije</h1></div><span class="status" id="status">● Na telefonu</span></header>
+<div id="notice" class="banner" hidden role="status"></div>
+<div class="hero"><small>Poraba v tem mesecu</small><strong id="spent">0,00 €</strong><p>Informativna poraba iz prejetih obvestil · ni uradno bančno stanje</p></div>
+<div class="stats"><div class="stat"><small>Prilivi</small><strong id="income">0,00 €</strong></div><div class="stat"><small>Dvigi ATM</small><strong id="atm">0,00 €</strong></div></div>
+<div class="actions"><button class="primary" id="add">+ Dodaj transakcijo</button><button id="paste">Prilepi obvestilo</button><button id="backup">Shrani kopijo</button></div>
+<section><div class="sectionhead"><h2>Transakcije <span id="count"></span></h2><select id="filter" aria-label="Filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"><div class="empty">Še ni transakcij.</div></div></section>
+<div class="panel" id="form" hidden>
+<h2 id="formtitle">Dodaj transakcijo</h2>
+<label for="description">Naziv</label><input id="description" maxlength="90" placeholder="npr. Mercator">
+<label for="amount">Znesek (€)</label><input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal">
+<label for="kind">Vrsta transakcije</label><select id="kind"><option value="pos">POS plačilo</option><option value="atm">Dvig ATM</option><option value="priliv">Priliv</option><option value="odliv">Odliv</option><option value="prenos">Prenos med računi</option><option value="kartica">Neznana kartična</option></select>
+<div class="actions"><button class="primary" id="save">Shrani</button><button id="cancel">Prekliči</button></div>
+</div>
+<div class="panel" id="pasteform" hidden>
+<h2>Vnos iz obvestila</h2><p>Prilepi besedilo Intesinega obvestila. Prepoznava poteka samo v Safariju.</p>
+<textarea id="raw" rows="4" placeholder="Na primer: Kartična transakcija 12,50 EUR ..."></textarea>
+<div class="actions"><button class="primary" id="parse">Prepoznaj in shrani</button><button id="pastecancel">Prekliči</button></div>
+</div>
+<details id="setup"><summary>⚙️ Poveži Intesina obvestila (brez dodatnih aplikacij)</summary>
+<p>Na iPhonu z iOS 27 v <b>Bližnjicah</b> ustvari avtomatizacijo <b>Notification → Intesa Sanpaolo</b>. Nastavi tri dejanja:</p>
+<ol>
+<li><b>URL Encode</b> – za vhod izberi <b>Notification → Body</b> (besedilo obvestila).</li>
+<li><b>Text</b> – vpiši spodnjo osnovo povezave in na koncu vstavi spremenljivko iz prejšnjega dejanja (<b>URL Encoded Text</b>): <code id="linkbase">https://tony-ops1.github.io/MOJE-TRANSAKCIJE/#tx=</code></li>
+<li><b>Open URLs</b> – izberi rezultat dejanja Text. Vklopi samodejno izvajanje, kjer ga iOS dovoli.</li>
+</ol>
+<button id="copybase">Kopiraj osnovo povezave</button>
+<p><b>Omejitev:</b> spletna stran se mora odpreti v Safariju, da shrani transakcijo. Na zaklenjenem iPhonu lahko iOS to prepreči. To zato ni zagotovljen povsem neslišen zajem. Enako evidenco vedno odpiraj v <b>Safariju</b> – aplikacija, dodana na začetni zaslon, lahko uporablja ločeno shrambo.</p>
+</details>
+<details><summary>💾 Varnostna kopija in obnovitev</summary>
+<p>Podatki so shranjeni v lokalni shrambi Safarija. Če izbrišeš podatke spletnih mest, jih lahko izgubiš. Redno izvozi kopijo.</p>
+<label for="restore">Obnovi iz datoteke JSON</label><input id="restore" type="file" accept=".json,application/json">
+</details>
+<p class="hint">GitHub gosti samo kodo aplikacije. Vnosi ostajajo v lokalni shrambi Safarija; besedilo obvestila v URL-ju uporabljamo za kratek prenos in ga stran takoj odstrani iz naslovne vrstice. Zneske in datume preveri v banki, ker niso nujno končno knjiženi. Ne vnašaj bančnih gesel, PIN-a ali potrditvenih kod.</p>
+</main>
 <script>
 (function(){
 "use strict";
-const rows=Array.isArray(window.__INTESA_ROWS__) ? window.__INTESA_ROWS__ : [];
-const local=window.__INTESA_LOCAL__===true;
-if(local){document.getElementById("publicNotice").hidden=true;document.getElementById("status").textContent="● Lokalno";}
+const KEY="intesa-html-v3",ALIASES="intesa-merchant-aliases-v3";
+const $=id=>document.getElementById(id);
+const format=x=>new Intl.NumberFormat("sl-SI",{style:"currency",currency:"EUR"}).format(x);
+const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const labels={pos:["POS","🛒",-1],atm:["Dvig ATM","🏧",-1],priliv:["Priliv","↙",1],odliv:["Odliv","↗",-1],prenos:["Prenos","⇄",-1],kartica:["Kartica","💳",-1]};
-const fmt=v=>new Intl.NumberFormat("sl-SI",{style:"currency",currency:"EUR"}).format(v);
-const str=s=>String(s==null?"":s);
-const esc=s=>str(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const now=new Date();
-const month=rows.filter(r=>{let d=new Date(r.date);return !isNaN(d)&&d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();});
-const total=kind=>month.filter(r=>kind.includes(r.kind)).reduce((sum,r)=>sum+(Number(r.amount)||0),0);
-document.getElementById("spent").textContent=fmt(total(["pos","odliv"]));
-document.getElementById("income").textContent=fmt(total(["priliv"]));
-document.getElementById("atm").textContent=fmt(total(["atm"]));
-function item(r){
- const k=labels[r.kind]||["Preveri","💳",-1];
- const d=new Date(r.date);
- const when=isNaN(d)?"Neznan datum":d.toLocaleString("sl-SI",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
- const amount=(Number(r.amount)||0)*k[2];
- const href="scriptable:///run/Intesa-Uredi?tx="+encodeURIComponent(str(r.id));
- return '<div class="item"><div class="symbol">'+k[1]+'</div><div class="details"><div class="name">'+esc(r.description||k[0])+(r.review?'<span class="review">Preveri</span>':'')+'</div><div class="meta">'+k[0]+' · '+when+'</div>'+(local?'<a class="edit" href="'+href+'">✎ Uredi naziv</a>':'')+'</div><div class="amount '+(amount>0?"positive":"negative")+'">'+(amount>0?"+":"−")+fmt(Math.abs(amount))+'</div></div>';
+const allowed=new Set(Object.keys(labels));
+const load=(key,fallback)=>{try{const value=JSON.parse(localStorage.getItem(key));return value==null?fallback:value}catch{return fallback}};
+let rows=load(KEY,[]),aliases=load(ALIASES,{});
+if(!Array.isArray(rows))rows=[];
+if(!aliases||typeof aliases!=="object"||Array.isArray(aliases))aliases={};
+function persist(){localStorage.setItem(KEY,JSON.stringify(rows));localStorage.setItem(ALIASES,JSON.stringify(aliases))}
+function show(msg,error=false){$("notice").hidden=false;$("notice").textContent=msg;$("notice").className=error?"banner error":"banner"}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return String(h>>>0)}
+function norm(s){return String(s||"").replace(/\s+/g," ").trim()}
+function merchantKey(s){return norm(s).toLocaleUpperCase("sl-SI").replace(/[^A-Z0-9ČŠŽ]/g,"")}
+function merchantFromText(s){
+ let m=s.match(/(?:\bVI|\bMC|\bMA|\bVISA|\bMASTERCARD)\s*[-:]\s*([^\n,;]+)/i);
+ if(!m)m=s.match(/(?:prejemnik|trgovec|prodajno mesto)\s*[:\-]\s*([^\n,;]+)/i);
+ if(!m)return null;
+ let raw=norm(m[1]).replace(/\b(?:D\s*\.?\s*O\s*\.?\s*O\s*\.?|D\s+O\s+O)\s*K?\s*$/i,"").replace(/\s+(?:SLOVENIJA)\s*$/i,"").trim().slice(0,100);
+ if(!raw)return null;
+ const upper=raw.toLocaleUpperCase("sl-SI");
+ const known=[[/\bLIDL\b/,"Lidl"],[/\bHOFER\b/,"Hofer"],[/\bMERCATOR\b/,"Mercator"],[/\bSPAR\b/,"Spar"],[/\bPETROL\b/,"Petrol"]];
+ let nice=raw.toLocaleLowerCase("sl-SI").replace(/(^|[\s-])([a-zčšžćđ])/g,(_,p,c)=>p+c.toLocaleUpperCase("sl-SI"));
+ for(const [test,name] of known)if(test.test(upper)){nice=name;break}
+ return {key:merchantKey(raw),name:nice};
+}
+function classify(s,merchant){
+ const t=s.toLocaleLowerCase("sl-SI");
+ if(/nov dokument|v arhivu|prijav|gesl|potrditven|avtentikac|enkratn|koda za|\bpin\b|verifikacij/.test(t))return null;
+ if(/bankomat|\batm\b|dvig.{0,30}gotovin/.test(t))return "atm";
+ if(/priliv|dobropis|prejet.{0,30}(nakazil|plačil)/.test(t))return "priliv";
+ if(/prenos sredstev|med lastnimi|med račun/.test(t))return "prenos";
+ if(/pos\b|nakup|plačilo s kartico|placilo s kartico/.test(t))return "pos";
+ if(merchant&&(/kartic|transakcij|odliv/.test(t)))return "pos";
+ if(/odliv|nakazil|plačilo računa|plačilo predračuna/.test(t))return "odliv";
+ if(/kartic|transakcij/.test(t))return "kartica";
+ return null;
+}
+function amountFromText(s){
+ const m=s.match(/(?:^|[^\w\d])((?:\d{1,3}(?:[\s.]\d{3})+|\d+)(?:[,.]\d{2}))\s*(?:EUR\b|€)/i);
+ if(!m)return null;
+ const n=m[1].replace(/\s/g,"");
+ const v=Number(n.lastIndexOf(",")>n.lastIndexOf(".")?n.replace(/\./g,"").replace(",","."):n.replace(/,/g,""));
+ return v>0&&v<1e8?Math.round(v*100)/100:null;
+}
+function dateFromText(s){
+ const m=s.match(/\b(\d{1,2})\.(\d{1,2})\.(20\d{2})\s*(?:ob\s*)?(\d{1,2}):(\d{2})/i);
+ if(m){const d=new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]);if(!isNaN(d))return d.toISOString()}
+ return new Date().toISOString();
+}
+function receive(text){
+ const s=norm(text);
+ if(!s||s.length>8000){show("Manjka besedilo obvestila ali je predolgo.",true);return}
+ const merchant=merchantFromText(s),kind=classify(s,merchant),amount=amountFromText(s);
+ if(!kind||amount===null){show("Obvestila ni bilo mogoče prepoznati. Lahko dodaš transakcijo ročno.",true);return}
+ const fingerprint=hash(s.toLocaleLowerCase("sl-SI")),now=Date.now();
+ if(rows.some(r=>r.fingerprint===fingerprint&&Math.abs(now-new Date(r.receivedAt).getTime())<10000)){show("To obvestilo je že zabeleženo.");return}
+ const fallback={pos:"Plačilo s kartico",atm:"Dvig gotovine",priliv:"Priliv",odliv:"Bančni odliv",prenos:"Prenos sredstev",kartica:"Kartična transakcija"};
+ const row={id:String(now)+"-"+Math.random().toString(36).slice(2,8),date:dateFromText(s),receivedAt:new Date(now).toISOString(),description:merchant?(aliases[merchant.key]||merchant.name):fallback[kind],amount,kind,merchantKey:merchant?.key||null,fingerprint,review:kind==="kartica"};
+ rows.unshift(row);
+ try{persist();show("Zabeleženo: "+row.description+" · "+format(row.amount));render()}
+ catch{rows.shift();show("Shranjevanje ni uspelo. Preveri nastavitve shrambe Safarija.",true)}
 }
 function render(){
- const f=document.getElementById("filter").value;
- const view=rows.filter(r=>f==="all"||r.kind===f);
- document.getElementById("count").textContent="("+view.length+")";
- document.getElementById("items").innerHTML=view.length?view.map(item).join(""):'<div class="empty">Še ni transakcij.<br>Nova obvestila se prikažejo po uspešnem zajemu v Bližnjicah.</div>';
+ const now=new Date(),month=rows.filter(r=>{const d=new Date(r.date);return !isNaN(d)&&d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()});
+ const total=kinds=>month.filter(r=>kinds.includes(r.kind)).reduce((n,r)=>n+Number(r.amount||0),0);
+ $("spent").textContent=format(total(["pos","odliv"]));$("income").textContent=format(total(["priliv"]));$("atm").textContent=format(total(["atm"]));
+ const f=$("filter").value,view=rows.filter(r=>f==="all"||r.kind===f);$("count").textContent="("+view.length+")";
+ $("items").innerHTML=view.map(r=>{
+  const label=labels[r.kind]||labels.kartica,d=new Date(r.date);
+  const date=isNaN(d)?"Datum ni znan":d.toLocaleString("sl-SI",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  const value=(label[2]===1?"+":"−")+format(Math.abs(Number(r.amount)||0));
+  return '<div class="item"><div class="symbol">'+label[1]+'</div><div class="details"><div class="name">'+esc(r.description)+(r.review?'<span class="flag">Preveri</span>':'')+'</div><div class="meta">'+label[0]+' · '+date+'</div><button type="button" class="edit" data-id="'+esc(r.id)+'">✎ Uredi naziv</button></div><div class="amount '+(label[2]===1?"positive":"negative")+'">'+value+'</div></div>';
+ }).join("")||'<div class="empty">Ni transakcij. Ko Bližnjica odpre to stran z obvestilom, se nova transakcija zabeleži tukaj.</div>';
 }
-document.getElementById("filter").addEventListener("change",render);render();
+$("filter").addEventListener("change",render);
+$("items").addEventListener("click",e=>{
+ const btn=e.target.closest("button[data-id]");if(!btn)return;
+ const r=rows.find(x=>x.id===btn.dataset.id);if(!r)return;
+ const changed=prompt("Popravi naziv trgovca:",r.description);
+ if(changed===null)return;const name=norm(changed).slice(0,90);if(!name)return;
+ if(r.merchantKey){aliases[r.merchantKey]=name;rows.forEach(x=>{if(x.merchantKey===r.merchantKey)x.description=name})}
+ else r.description=name;
+ try{persist();render();show("Naziv je popravljen.")}catch{show("Spremembe ni bilo mogoče shraniti.",true)}
+});
+$("add").addEventListener("click",()=>{$("form").hidden=false;$("pasteform").hidden=true});
+$("cancel").addEventListener("click",()=>{$("form").hidden=true});
+$("save").addEventListener("click",()=>{
+ const description=norm($("description").value).slice(0,90);
+ const amount=Number(String($("amount").value).replace(",","."));
+ const kind=$("kind").value;
+ if(!description||!(amount>0)||!Number.isFinite(amount)||!allowed.has(kind)){show("Vpiši naziv in veljaven znesek.",true);return}
+ rows.unshift({id:String(Date.now())+"-"+Math.random(),date:new Date().toISOString(),receivedAt:new Date().toISOString(),description,amount:Math.round(amount*100)/100,kind,merchantKey:null,fingerprint:null,review:false});
+ try{persist();$("form").hidden=true;$("description").value="";$("amount").value="";render();show("Transakcija dodana.")}
+ catch{rows.shift();show("Shranjevanje ni uspelo.",true)}
+});
+$("paste").addEventListener("click",()=>{$("pasteform").hidden=false;$("form").hidden=true});
+$("pastecancel").addEventListener("click",()=>{$("pasteform").hidden=true});
+$("parse").addEventListener("click",()=>{receive($("raw").value);$("raw").value="";$("pasteform").hidden=true});
+$("backup").addEventListener("click",()=>{
+ const data=JSON.stringify({version:3,exportedAt:new Date().toISOString(),rows,aliases},null,2);
+ const blob=new Blob([data],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="intesa-evidenca-"+new Date().toISOString().slice(0,10)+".json";a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+});
+$("restore").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  if(file.size>5e6)throw new Error("Prevelika datoteka");
+  const x=JSON.parse(await file.text());
+  if(!x||!Array.isArray(x.rows)||x.rows.length>20000||x.rows.some(r=>!allowed.has(r.kind)||typeof r.description!=="string"||!(Number(r.amount)>0)))throw new Error("Napačen format datoteke");
+  if(!confirm("Obnovim "+x.rows.length+" zapisov? Trenutna evidenca bo zamenjana."))return;
+  rows=x.rows.map(r=>({id:String(r.id||Date.now()+Math.random()),date:String(r.date||""),receivedAt:String(r.receivedAt||r.date||""),description:String(r.description).slice(0,90),amount:Math.round(Number(r.amount)*100)/100,kind:r.kind,merchantKey:r.merchantKey?String(r.merchantKey).slice(0,120):null,fingerprint:r.fingerprint?String(r.fingerprint):null,review:!!r.review}));
+  aliases=x.aliases&&typeof x.aliases==="object"&&!Array.isArray(x.aliases)?x.aliases:{};
+  persist();render();show("Varnostna kopija obnovljena.");
+ }catch(err){show("Obnovitev ni uspela: "+err.message,true)}
+ e.target.value="";
+});
+$("copybase").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("linkbase").textContent);show("Osnova povezave kopirana.")}catch{show("Označi povezavo in jo kopiraj ročno.",true)}});
+function importHash(){
+ const frag=location.hash;
+ if(!frag.startsWith("#tx="))return;
+ // Nikoli ne pustimo besedila obvestila v vidnem URL-ju.
+ history.replaceState(null,"",location.pathname+location.search);
+ try{receive(decodeURIComponent(frag.slice(4)))}catch{show("Besedila ni bilo mogoče prebrati.",true)}
+}
+render();importHash();
 })();
-</script></main></body></html>
+</script></body></html>

@@ -46,8 +46,8 @@ ol{padding-left:19px}li{margin:9px 0}.hint{font-size:12px;color:#9eb9ca;line-hei
 <div id="notice" class="banner" hidden role="status"></div>
 <div class="hero"><small>Poraba v tem mesecu</small><strong id="spent">0,00 €</strong><p>Informativna poraba iz prejetih obvestil · ni uradno bančno stanje</p></div>
 <div class="stats"><div class="stat"><small>Prilivi</small><strong id="income">0,00 €</strong></div><div class="stat"><small>Dvigi ATM</small><strong id="atm">0,00 €</strong></div></div>
-<div class="actions"><button class="primary" id="add">+ Dodaj transakcijo</button><button id="paste">Prilepi obvestilo</button><button id="backup">Shrani kopijo</button></div>
-<section><div class="sectionhead"><h2>Transakcije <span id="count"></span></h2><select id="filter" aria-label="Filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"><div class="empty">Še ni transakcij.</div></div></section>
+<div class="actions"><button class="primary" id="importlog">📂 Uvozi transakcije.txt</button><input type="file" id="importlogfile" accept=".txt,text/plain" multiple hidden><button id="add">+ Dodaj transakcijo</button><button id="paste">Prilepi obvestilo</button><button id="backup">Shrani kopijo</button></div>
+<p id="importhelp" class="hint">V aplikaciji Datoteke izberi: Na mojem iPhonu → INTESA → transakcije.txt. Ponoven uvoz iste datoteke ne podvoji že uvoženih obvestil. Podatki ostanejo v brskalniku.</p><section><div class="sectionhead"><h2>Transakcije <span id="count"></span></h2><select id="filter" aria-label="Filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"><div class="empty">Še ni transakcij.</div></div></section>
 <div class="panel" id="form" hidden>
 <h2 id="formtitle">Dodaj transakcijo</h2>
 <label for="description">Naziv</label><input id="description" maxlength="90" placeholder="npr. Mercator">
@@ -60,21 +60,16 @@ ol{padding-left:19px}li{margin:9px 0}.hint{font-size:12px;color:#9eb9ca;line-hei
 <textarea id="raw" rows="4" placeholder="Na primer: Kartična transakcija 12,50 EUR ..."></textarea>
 <div class="actions"><button class="primary" id="parse">Prepoznaj in shrani</button><button id="pastecancel">Prekliči</button></div>
 </div>
-<details id="setup"><summary>⚙️ Poveži Intesina obvestila (brez dodatnih aplikacij)</summary>
-<p>Na iPhonu z iOS 27 v <b>Bližnjicah</b> ustvari avtomatizacijo <b>Notification → Intesa Sanpaolo</b>. Nastavi tri dejanja:</p>
-<ol>
-<li><b>URL Encode</b> – za vhod izberi <b>Notification → Body</b> (besedilo obvestila).</li>
-<li><b>Text</b> – vpiši spodnjo osnovo povezave in na koncu vstavi spremenljivko iz prejšnjega dejanja (<b>URL Encoded Text</b>): <code id="linkbase">https://tony-ops1.github.io/MOJE-TRANSAKCIJE/#tx=</code></li>
-<li><b>Open URLs</b> – izberi rezultat dejanja Text. Vklopi samodejno izvajanje, kjer ga iOS dovoli.</li>
-</ol>
-<button id="copybase">Kopiraj osnovo povezave</button>
-<p><b>Omejitev:</b> spletna stran se mora odpreti v Safariju, da shrani transakcijo. Na zaklenjenem iPhonu lahko iOS to prepreči. To zato ni zagotovljen povsem neslišen zajem. Enako evidenco vedno odpiraj v <b>Safariju</b> – aplikacija, dodana na začetni zaslon, lahko uporablja ločeno shrambo.</p>
-</details>
+<details id="setup"><summary>⚙️ Kako se podatki zbirajo</summary>
+<p>Bližnjica INTESA TRANSAKCIJE že prejema obvestila ISPS. V Bližnjicah naj ostaneta: <b>Obvestilo ISPS → Besedilo (naslov + vsebina) → Dodaj na konec datoteke</b>.</p>
+<p>Datoteka: <b>Na mojem iPhonu → INTESA → transakcije.txt</b>. Ob odprtju te aplikacije pritisni <b>Uvozi transakcije.txt</b> in izberi datoteko. Novi zapisi se dodajo, stari ostanejo.</p>
+<p>GitHub Pages nima pravice brati te datoteke brez tvoje izbire. Zato za zdaj uvoz opraviš z enim pritiskom; zajem obvestil v datoteko lahko poteka brez odpiranja brskalnika, če ga iOS dovoli.</p>
+<p>Če se v Bližnjicah ponovi napaka »datoteka že obstaja«, preveri dejanje »Dodaj na konec« in pravice shranjevanja. Ne izbriši obstoječe datoteke, dokler nimaš varnostne kopije.</p></details>
 <details><summary>💾 Varnostna kopija in obnovitev</summary>
 <p>Podatki so shranjeni v lokalni shrambi Safarija. Če izbrišeš podatke spletnih mest, jih lahko izgubiš. Redno izvozi kopijo.</p>
 <label for="restore">Obnovi iz datoteke JSON</label><input id="restore" type="file" accept=".json,application/json">
 </details>
-<p class="hint">GitHub gosti samo kodo aplikacije. Vnosi ostajajo v lokalni shrambi Safarija; besedilo obvestila v URL-ju uporabljamo za kratek prenos in ga stran takoj odstrani iz naslovne vrstice. Zneske in datume preveri v banki, ker niso nujno končno knjiženi. Ne vnašaj bančnih gesel, PIN-a ali potrditvenih kod.</p>
+<p class="hint">GitHub gosti samo kodo, lokalna datoteka in podatki v Safariju se na GitHub ne nalagajo. Uvoz je ročen, zajem s pomočjo Bližnjic pa je odvisen od iOS. Avtorizacije niso končna plačila; nakazila med lastnimi računi niso poraba. Zapise brez datuma začasno pripišemo dnevu uvoza. Ne vnašaj gesel, PIN-ov ali potrditvenih kod.</p>
 </main>
 <script>
 (function(){
@@ -130,6 +125,86 @@ function dateFromText(s){
  if(m){const d=new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]);if(!isNaN(d))return d.toISOString()}
  return new Date().toISOString();
 }
+
+/* Uvoz lokalnega dnevnika, ki ga Apple Bližnjice ustvarijo na iPhonu.
+   Koda se izvaja samo v brskalniku. Besedilo se ne pošilja nikamor. */
+function splitIntesaLog(input){
+ const lines=String(input||"").replace(/\uFEFF/g,"").replace(/\r\n?/g,"\n").split("\n").map(x=>x.trim()).filter(Boolean);
+ const start=/^(?:priliv|odliv)\s+\d[\d\s.,]*\s*(?:EUR|€)\s*$|^avtorizacija\s+plačila\b|^z vašo kartico je bila izvršena\b/i;
+ let groups=[],part=[];
+ for(const line of lines){
+  if(start.test(line)&&part.length){groups.push(part.join("\n"));part=[];}
+  part.push(line);
+ }
+ if(part.length)groups.push(part.join("\n"));
+ return groups;
+}
+function merchantInLog(raw){
+ let m=raw.match(/\b(?:VI|MC|MA|VISA|MASTERCARD)\s*[-:]\s*([^\n,;]+)/i);
+ if(!m)m=raw.match(/\bprejemnik\s*[: ]+\s*([^\n,;]+)/i);
+ if(!m)m=raw.match(/\bpri\s+(.+?)\s+s\s+kartico\b/i);
+ if(!m)return null;
+ let name=norm(m[1]).replace(/\bD\s*\.?\s*O\s*\.?\s*O\s*\.?\s*K?\s*\.?\s*$/i,"").replace(/[.\s,;]+$/,"").trim();
+ if(!name)return null;
+ const upper=name.toLocaleUpperCase("sl-SI");
+ let display=name.toLocaleLowerCase("sl-SI").replace(/(^|[\s.-])([a-zčšžćđ])/g,(_,p,c)=>p+c.toLocaleUpperCase("sl-SI"));
+ const known=[[/\bMCDONALD'?S\b/,"McDonald's"],[/\bLIDL\b/,"Lidl"],[/\bHOFER\b/,"Hofer"],[/\bMERCATOR\b/,"Mercator"],[/\bSPAR\b/,"Spar"],[/\bPETROL\b/,"Petrol"],[/\bAIRCASH\b/,"Aircash"],[/\bSUMUP\b.*\bMIXY\b/,"Mixy (SumUp)"]];
+ for(const [re,text] of known)if(re.test(upper)){display=text;break;}
+ return {key:merchantKey(name),name:display.slice(0,90)};
+}
+function parseIntesaBlock(raw,ordinal){
+ const first=raw.split("\n")[0].trim();
+ const head=first.match(/^(priliv|odliv)\s+([\d\s.,]+)\s*(?:EUR|€)\s*$/i);
+ const auth=/^avtorizacija\s+plačila/i.test(first);
+ const card=/^z vašo kartico je bila izvršena/i.test(first);
+ if(!head&&!auth&&!card)return null;
+ const amount=amountFromText(raw);
+ if(amount===null)return null;
+ const merchant=merchantInLog(raw);
+ const isTransfer=/\bprenos sredstev\b|med lastnimi računi/i.test(raw);
+ const details=raw.split("\n").slice(1).join(" ");
+ const direction=head?(head[1].toLocaleLowerCase("sl-SI")==="priliv"?1:-1):-1;
+ let kind=card||auth?"pos":direction===1?"priliv":"odliv";
+ if(isTransfer)kind="prenos";
+ if(/bankomat|\bATM\b|dvig gotovine/i.test(raw))kind="atm";
+ else if(head&&merchant&&kind==="odliv")kind="pos";
+ const fallback=kind==="prenos"?"Prenos sredstev":kind==="priliv"?"Priliv":kind==="odliv"?"Odliv":kind==="atm"?"Bankomat":"Kartično plačilo";
+ let description=merchant?(aliases[merchant.key]||merchant.name):fallback;
+ if(isTransfer){
+   const counterparty=details.replace(/:\s*prenos sredstev.*$/i,"").trim();
+   if(counterparty&&!/^(prenos|odliv|priliv)/i.test(counterparty))description="Prenos sredstev – "+counterparty.slice(0,50);
+ }
+ const m=raw.match(/\b(\d{1,2})\.(\d{1,2})\.(20\d{2})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+ let date=new Date(),dateEstimated=true;
+ if(m){
+   const d=new Date(Number(m[3]),Number(m[2])-1,Number(m[1]),Number(m[4]),Number(m[5]),Number(m[6]||0));
+   if(d.getFullYear()===Number(m[3])&&d.getMonth()===Number(m[2])-1&&d.getDate()===Number(m[1])){date=d;dateEstimated=false;}
+ }
+ const normalized=norm(raw).toLocaleLowerCase("sl-SI");
+ const sourceKey="txt-"+hash(normalized)+"-"+hash([...normalized].reverse().join(""))+"-"+ordinal;
+ return {id:"i-"+sourceKey,date:date.toISOString(),receivedAt:new Date().toISOString(),description,amount,kind,
+   direction,merchantKey:merchant?merchant.key:null,source:"intesa-txt",sourceKey,review:false,
+   dateEstimated,status:auth?"avtorizacija":null,skipTotals:auth,fingerprint:null};
+}
+function parseIntesaFile(input){
+ const parts=splitIntesaLog(input),seen=new Map(),result=[];
+ for(const part of parts){
+  const key=norm(part).toLocaleLowerCase("sl-SI");
+  const count=(seen.get(key)||0)+1;seen.set(key,count);
+  const entry=parseIntesaBlock(part,count);
+  if(entry)result.push(entry);
+ }
+ // Enak opis brez datuma lahko pomeni dejansko ponovljeno nakazilo.
+ // Takih zapisov ne odstranjujemo samodejno, ampak jih označimo za pregled.
+ const bySignature=new Set();
+ for(const r of result){
+  const signature=[r.kind,r.direction,r.amount,r.description,r.dateEstimated?"brez-datuma":r.date].join("|");
+  if(bySignature.has(signature)&&r.dateEstimated)r.review=true;
+  bySignature.add(signature);
+ }
+ return result;
+}
+
 function receive(text){
  const s=norm(text);
  if(!s||s.length>8000){show("Manjka besedilo obvestila ali je predolgo.",true);return}
@@ -145,16 +220,41 @@ function receive(text){
 }
 function render(){
  const now=new Date(),month=rows.filter(r=>{const d=new Date(r.date);return !isNaN(d)&&d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()});
- const total=kinds=>month.filter(r=>kinds.includes(r.kind)).reduce((n,r)=>n+Number(r.amount||0),0);
+ const total=kinds=>month.filter(r=>!r.skipTotals&&kinds.includes(r.kind)).reduce((n,r)=>n+Number(r.amount||0),0);
  $("spent").textContent=format(total(["pos","odliv"]));$("income").textContent=format(total(["priliv"]));$("atm").textContent=format(total(["atm"]));
  const f=$("filter").value,view=rows.filter(r=>f==="all"||r.kind===f);$("count").textContent="("+view.length+")";
  $("items").innerHTML=view.map(r=>{
   const label=labels[r.kind]||labels.kartica,d=new Date(r.date);
-  const date=isNaN(d)?"Datum ni znan":d.toLocaleString("sl-SI",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
-  const value=(label[2]===1?"+":"−")+format(Math.abs(Number(r.amount)||0));
-  return '<div class="item"><div class="symbol">'+label[1]+'</div><div class="details"><div class="name">'+esc(r.description)+(r.review?'<span class="flag">Preveri</span>':'')+'</div><div class="meta">'+label[0]+' · '+date+'</div><button type="button" class="edit" data-id="'+esc(r.id)+'">✎ Uredi naziv</button></div><div class="amount '+(label[2]===1?"positive":"negative")+'">'+value+'</div></div>';
+  const date=r.dateEstimated?"Datum ni v obvestilu · uvoženo "+(isNaN(d)?"":d.toLocaleDateString("sl-SI")):(isNaN(d)?"Datum ni znan":d.toLocaleString("sl-SI",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit"}));
+  const dir=r.direction===1?1:r.direction===-1?-1:label[2];
+  const value=(dir===1?"+":"−")+format(Math.abs(Number(r.amount)||0));
+  return '<div class="item"><div class="symbol">'+label[1]+'</div><div class="details"><div class="name">'+esc(r.description)+(r.status==="avtorizacija"?'<span class="flag">Avtorizacija · ni v porabi</span>':r.review?'<span class="flag">Preveri dvojni zapis</span>':'')+'</div><div class="meta">'+label[0]+' · '+date+'</div><button type="button" class="edit" data-id="'+esc(r.id)+'">✎ Uredi naziv</button></div><div class="amount '+(dir===1?"positive":"negative")+'">'+value+'</div></div>';
  }).join("")||'<div class="empty">Ni transakcij. Ko Bližnjica odpre to stran z obvestilom, se nova transakcija zabeleži tukaj.</div>';
 }
+
+$("importlog").addEventListener("click",()=>$("importlogfile").click());
+$("importlogfile").addEventListener("change",async e=>{
+ const files=[...(e.target.files||[])];if(!files.length)return;
+ try{
+  if(files.some(f=>f.size>5*1024*1024)||files.length>100)throw Error("Datoteka je prevelika.");
+  const imported=[];
+  for(const file of files)imported.push(...parseIntesaFile(await file.text()));
+  const known=new Set(rows.filter(r=>r.sourceKey).map(r=>r.sourceKey));
+  let added=0;
+  for(const record of imported){
+    if(!known.has(record.sourceKey)){rows.push(record);known.add(record.sourceKey);added++;}
+  }
+  if(added){
+    rows.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    try{persist()}catch(err){rows=rows.filter(r=>!imported.some(x=>x.id===r.id));throw err;}
+  }
+  render();
+  const auth=imported.filter(r=>r.status==="avtorizacija").length;
+  show("Uvoz končan: "+added+" novih zapisov, "+(imported.length-added)+" že uvoženih."+(auth?" Avtorizacije ("+auth+") niso prištete v porabo.":"")+" Podvojene prenose brez datuma preveri.");
+ }catch(err){show("Uvoz ni uspel: "+String(err.message||err),true);}
+ e.target.value="";
+});
+
 $("filter").addEventListener("change",render);
 $("items").addEventListener("click",e=>{
  const btn=e.target.closest("button[data-id]");if(!btn)return;
@@ -197,7 +297,6 @@ $("restore").addEventListener("change",async e=>{
  }catch(err){show("Obnovitev ni uspela: "+err.message,true)}
  e.target.value="";
 });
-$("copybase").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("linkbase").textContent);show("Osnova povezave kopirana.")}catch{show("Označi povezavo in jo kopiraj ročno.",true)}});
 function importHash(){
  const frag=location.hash;
  if(!frag.startsWith("#tx="))return;

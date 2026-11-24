@@ -194,14 +194,8 @@ function parseIntesaFile(input){
   const entry=parseIntesaBlock(part,count);
   if(entry)result.push(entry);
  }
- // Enak opis brez datuma lahko pomeni dejansko ponovljeno nakazilo.
- // Takih zapisov ne odstranjujemo samodejno, ampak jih označimo za pregled.
- const bySignature=new Set();
- for(const r of result){
-  const signature=[r.kind,r.direction,r.amount,r.description,r.dateEstimated?"brez-datuma":r.date].join("|");
-  if(bySignature.has(signature)&&r.dateEstimated)r.review=true;
-  bySignature.add(signature);
- }
+ // Isti znesek in opis lahko pomenita več resničnih nakazil.
+ // Vse pojavitve v datoteki ohranimo; samo ponovni uvoz iste pojavitve preskočimo.
  return result;
 }
 
@@ -250,7 +244,7 @@ $("importlogfile").addEventListener("change",async e=>{
   }
   render();
   const auth=imported.filter(r=>r.status==="avtorizacija").length;
-  show("Uvoz končan: "+added+" novih zapisov, "+(imported.length-added)+" že uvoženih."+(auth?" Avtorizacije ("+auth+") niso prištete v porabo.":"")+" Podvojene prenose brez datuma preveri.");
+  show("Uvoz končan: "+added+" novih zapisov, "+(imported.length-added)+" že uvoženih."+(auth?" Avtorizacije ("+auth+") niso prištete v porabo.":"")+" Enake zneske ohranimo kot ločene zapise.");
  }catch(err){show("Uvoz ni uspel: "+String(err.message||err),true);}
  e.target.value="";
 });

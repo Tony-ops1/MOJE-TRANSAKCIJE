@@ -1,40 +1,40 @@
-# MOJE-TRANSAKCIJE — preprosta HTML evidenca za Inteso
+# MOJE-TRANSAKCIJE – Intesa Sanpaolo
 
-GitHub Pages gosti samo **HTML/CSS/JavaScript**. Podatki o transakcijah ostanejo v **lokalni shrambi Safarija** na tvojem iPhonu. Ni spletne baze, Scriptable ni več potreben.
+Zasebna HTML evidenca za iPhone. Koda je na GitHub Pages, transakcije pa ostanejo v lokalni datoteki na telefonu in v shrambi brskalnika po uvozu. **Na GitHub ne nalagaj datotek z dejanskimi bančnimi podatki.**
 
 ## Odpri aplikacijo
 
-https://tony-ops1.github.io/MOJE-TRANSAKCIJE/
+**https://tony-ops1.github.io/MOJE-TRANSAKCIJE/**
 
-## Samodejni prejem prek iOS 27 Bližnjic
+## Kako deluje trenutna različica
 
-V aplikaciji odpri **⚙️ Poveži Intesina obvestila** ali stran https://tony-ops1.github.io/MOJE-TRANSAKCIJE/namesti.html .
+1. Bližnjica `INTESA TRANSAKCIJE` se sproži, ko aplikacija **ISPS** pošlje obvestilo.
+2. Bližnjica sestavi `Naslov` in `Besedilo` ter ju z dejanjem **Dodaj na konec datoteke** poskusi dodati v `Na mojem iPhonu/INTESA/transakcije.txt`. Delovanje pri zaklenjenem iPhonu je treba preveriti.
+3. V **Safariju** odpri HTML aplikacijo in pritisni **Uvozi transakcije.txt**.
+4. V izbirniku Datoteke izberi **Na mojem iPhonu → INTESA → transakcije.txt**.
+5. Aplikacija prikaže POS plačila, dvige, prilive in prenose. Popravi naziv trgovca, če je napačen.
 
-1. V Bližnjicah dodaj sprožilec **Notification (Obvestilo)** za Intesa Sanpaolo, če ga iPhone omogoča.
-2. Dodaj dejanje **URL Encode** z vhodom **Notification → Body**.
-3. Dodaj dejanje **Text**: `https://tony-ops1.github.io/MOJE-TRANSAKCIJE/#tx=` in takoj za znakom `=` vstavi rezultat prejšnjega dejanja.
-4. Dodaj dejanje **Open URLs** z vhodom Text.
-5. Shrani avtomatizacijo in preizkusi naslednje bančno obvestilo.
+### Uvoz in seštevanje
 
-HTML stran iz fragmenta URL (`#tx=`) prebere obvestilo, izlušči znesek, vrsto in trgovca, ustvari lokalni zapis, nato fragment takoj odstrani iz naslovne vrstice. Fragment ni poslan strežniku z običajno HTTP zahtevo. **Kljub temu je posredovanje obvestila skozi URL občutljivejše kot izključno lokalen App Intent:** lahko se na kratko pojavi v naslovni vrstici ali zgodovini telefona, zato uporabnik prevzame to omejitev. Ne predajaj PIN-ov ali kod.
+- Pri ponovnem uvozu nespremenjene datoteke se obvestila ne podvojijo.
+- **Avtorizacija kartice** se označi kot avtorizacija in se ne prišteje med izdatke, če je pozneje na voljo končna transakcija. Tudi brez končne transakcije avtorizacija ni knjižena poraba.
+- Več enakih odlivov brez časovnega žiga se označi za pregled, ne izbriše samodejno.
+- **Prenosi sredstev** so ločeni od običajne porabe (tudi priliv in odliv istega prenosa).
+- Če datum v obvestilu ni naveden, se za razvrstitev začasno uporabi dan uvoza in vrstica dobi opozorilo. Mesečni seštevki zato niso bančni izpisek.
+- Spremembe imen trgovcev se shranijo lokalno. Datoteke se iz brskalnika **ne bere avtomatsko**: za nove zapise jo ponovno izberi.
+- **Shrani kopijo** izvozi JSON, iz katerega je mogoče evidenco obnoviti.
 
-## Omejitve iPhona in zasebnost
+### Če Bližnjice pokažejo »Datoteka z istim imenom že obstaja«
 
-- **GitHub Pages ne more neposredno brati obvestil ali pisati v lokalno shrambo, ko Safari ni odprt.** Za zapis mora Bližnjica odpreti stran v Safariju. Pri zaklenjenem telefonu iOS to lahko prepreči. Zato ni zagotovljen popolnoma neslišen zajem vsake transakcije.
-- Spletna aplikacija, dodana na začetni zaslon, lahko uporablja *drugo* lokalno shrambo kot Safari. Zaradi enotne evidence uporabljaj **Safari**.
-- Bančna obvestila niso nujno enaka končnim knjiženim transakcijam in ne povedo vedno vseh podatkov. Dvigi ATM niso samodejno izdatki.
-- Če počistiš podatke Safarija, lahko izgubiš evidenco. Uporabi **Shrani kopijo** v HTML aplikaciji in shrani datoteko med datoteke iPhona.
-- Ni bančnega gesla, PIN-a, dostopa do plačevanja ali prenosa podatkov na zunanji strežnik.
-- Ne nalagaj bančnih podatkov v ta javni GitHub repozitorij.
+Napaka je v dejanju za zapis, ne v HTML aplikaciji. **Ne izbriši že obstoječe datoteke.** Najprej shrani kopijo `transakcije.txt` v aplikaciji Datoteke in preveri, da je dejanje zares **Dodaj na konec datoteke**, ne običajno **Shrani datoteko**. Če se napaka ponavlja, bo morda potreben drugačen način zapisovanja (na primer ločena datoteka za vsako obvestilo). Sam HTML na GitHubu težave pri zapisovanju ne more popraviti.
 
-## Kaj je narejeno
+### Varnost in omejitve
 
-- Prepoznava zneskov, trgovcev (npr. Lidl), kartičnih plačil, bankomatov, nakazil in prilivov.
-- Urejanje naziva trgovca z lokalnim pomnjenjem prihodnjih enakih trgovcev.
-- Mesečni seštevek, filter transakcij, ročni vnos, lepljenje bančnih obvestil.
-- Izvoz in obnova varnostne kopije v JSON.
-- Preprečevanje neposredno podvojenih zapisov.
+- Ni dostopa do bančnega računa, gesel ali kartičnih kod.
+- Podatki se ob uvozu obdelajo v brskalniku in shranijo lokalno v Safariju.
+- Zaradi varnosti pri uvozu uporabljaj **Safari**, ne Chrome oziroma ločenega spletnega pogleda: lokalne shrambe so lahko ločene.
+- Če zbrišeš podatke Safarija ali izgubiš telefon, lahko izgubiš evidenco. Redno izvozi varnostno kopijo.
+- GitHub Pages ne more samodejno dostopati do datoteke na iPhonu, zlasti ne pri zaklenjenem zaslonu. Za res povsem samodejen prikaz bi potrebovali drugačno aplikacijo ali sinhronizacijo z izrecnim dovoljenjem.
+- Ne spreminjaj ali odstranjuj starih zapisov iz `transakcije.txt` brez varnostne kopije.
 
-## Stari skripti
-
-Mapa `scriptable/` vsebuje stare poskusne skripte iz prejšnje različice. **Za novo HTML evidenco jih ni treba namestiti.** Stara Scriptable shramba se ne prenese samodejno v Safari in ni del nove aplikacije.
+Mapa `scriptable/` vsebuje stare poskusne skripte iz prejšnjega načrta; za trenutno HTML različico niso potrebni.

@@ -18,7 +18,7 @@ Zasebna HTML evidenca za iPhone. Koda je na GitHub Pages, transakcije pa ostanej
 
 - Pri ponovnem uvozu nespremenjene datoteke se obvestila ne podvojijo.
 - **Avtorizacija kartice** se označi kot avtorizacija in se ne prišteje med izdatke, če je pozneje na voljo končna transakcija. Tudi brez končne transakcije avtorizacija ni knjižena poraba.
-- Več enakih odlivov brez časovnega žiga se označi za pregled, ne izbriše samodejno.
+- Več enakih odlivov brez časovnega žiga ostane v evidenci kot več ločenih zapisov. Enak znesek sam po sebi ne pomeni podvojitve.
 - **Prenosi sredstev** so ločeni od običajne porabe (tudi priliv in odliv istega prenosa).
 - Če datum v obvestilu ni naveden, se za razvrstitev začasno uporabi dan uvoza in vrstica dobi opozorilo. Mesečni seštevki zato niso bančni izpisek.
 - Spremembe imen trgovcev se shranijo lokalno. Datoteke se iz brskalnika **ne bere avtomatsko**: za nove zapise jo ponovno izberi.

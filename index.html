@@ -291,7 +291,7 @@ $("restore").addEventListener("change",async e=>{
   const x=JSON.parse(await file.text());
   if(!x||!Array.isArray(x.rows)||x.rows.length>20000||x.rows.some(r=>!allowed.has(r.kind)||typeof r.description!=="string"||!(Number(r.amount)>0)))throw new Error("Napačen format datoteke");
   if(!confirm("Obnovim "+x.rows.length+" zapisov? Trenutna evidenca bo zamenjana."))return;
-  rows=x.rows.map(r=>({id:String(r.id||Date.now()+Math.random()),date:String(r.date||""),receivedAt:String(r.receivedAt||r.date||""),description:String(r.description).slice(0,90),amount:Math.round(Number(r.amount)*100)/100,kind:r.kind,merchantKey:r.merchantKey?String(r.merchantKey).slice(0,120):null,fingerprint:r.fingerprint?String(r.fingerprint):null,review:!!r.review}));
+  rows=x.rows.map(r=>({id:String(r.id||Date.now()+Math.random()),date:String(r.date||""),receivedAt:String(r.receivedAt||r.date||""),description:String(r.description).slice(0,90),amount:Math.round(Number(r.amount)*100)/100,kind:r.kind,merchantKey:r.merchantKey?String(r.merchantKey).slice(0,120):null,fingerprint:r.fingerprint?String(r.fingerprint):null,review:!!r.review,sourceKey:r.sourceKey?String(r.sourceKey).slice(0,150):null,source:r.source==="intesa-txt"?"intesa-txt":null,status:r.status==="avtorizacija"?"avtorizacija":null,skipTotals:!!r.skipTotals,dateEstimated:!!r.dateEstimated,direction:r.direction===1?1:r.direction===-1?-1:null}));
   aliases=x.aliases&&typeof x.aliases==="object"&&!Array.isArray(x.aliases)?x.aliases:{};
   persist();render();show("Varnostna kopija obnovljena.");
  }catch(err){show("Obnovitev ni uspela: "+err.message,true)}

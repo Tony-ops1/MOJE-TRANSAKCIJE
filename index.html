@@ -47,7 +47,7 @@ ol{padding-left:19px}li{margin:9px 0}.hint{font-size:12px;color:#9eb9ca;line-hei
 <div class="hero"><small>Poraba v tem mesecu</small><strong id="spent">0,00 €</strong><p>Informativna poraba iz prejetih obvestil · ni uradno bančno stanje</p></div>
 <div class="stats"><div class="stat"><small>Prilivi</small><strong id="income">0,00 €</strong></div><div class="stat"><small>Dvigi ATM</small><strong id="atm">0,00 €</strong></div></div>
 <div class="actions"><button class="primary" id="importlog">📂 Uvozi transakcije.txt</button><input type="file" id="importlogfile" accept=".txt,text/plain" multiple hidden><button id="add">+ Dodaj transakcijo</button><button id="paste">Prilepi obvestilo</button><button id="backup">Shrani kopijo</button></div>
-<p id="importhelp" class="hint">V aplikaciji Datoteke izberi: Na mojem iPhonu → INTESA → transakcije.txt. Ponoven uvoz iste datoteke ne podvoji že uvoženih obvestil. Podatki ostanejo v brskalniku.</p><section><div class="sectionhead"><h2>Transakcije <span id="count"></span></h2><select id="filter" aria-label="Filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"><div class="empty">Še ni transakcij.</div></div></section>
+<p id="importhelp" class="hint">V aplikaciji Datoteke izberi: Na mojem iPhonu → INTESA → transakcije.txt. Ponoven uvoz ne podvoji zapisov in lahko popravi napačen predznak starih nakazil. Če najnovejših plačil ni, preveri, ali so že v transakcije.txt. Podatki ostanejo v brskalniku.</p><section><div class="sectionhead"><h2>Transakcije <span id="count"></span></h2><select id="filter" aria-label="Filter"><option value="all">Vse</option><option value="pos">POS</option><option value="atm">ATM</option><option value="priliv">Prilivi</option><option value="odliv">Odlivi</option><option value="prenos">Prenosi</option><option value="kartica">Preveri</option></select></div><div class="list" id="items"><div class="empty">Še ni transakcij.</div></div></section>
 <div class="panel" id="form" hidden>
 <h2 id="formtitle">Dodaj transakcijo</h2>
 <label for="description">Naziv</label><input id="description" maxlength="90" placeholder="npr. Mercator">
@@ -233,18 +233,39 @@ $("importlogfile").addEventListener("change",async e=>{
   if(files.some(f=>f.size>5*1024*1024)||files.length>100)throw Error("Datoteka je prevelika.");
   const imported=[];
   for(const file of files)imported.push(...parseIntesaFile(await file.text()));
-  const known=new Set(rows.filter(r=>r.sourceKey).map(r=>r.sourceKey));
-  let added=0;
+  const before=rows;
+  const updatedRows=rows.map(r=>({...r}));
+  const known=new Map(updatedRows.filter(r=>r.sourceKey).map(r=>[r.sourceKey,r]));
+  let added=0,corrected=0;
   for(const record of imported){
-    if(!known.has(record.sourceKey)){rows.push(record);known.add(record.sourceKey);added++;}
+    const previous=known.get(record.sourceKey);
+    if(!previous){
+      updatedRows.push(record);
+      known.set(record.sourceKey,record);
+      added++;
+      continue;
+    }
+    // Pri ponovnem uvozu popravimo znake prilivov in odlivov tudi v
+    // starejših lokalnih zapisih, ne da bi izbrisali popravljen naziv.
+    let changed=false;
+    for(const field of ["direction","kind","status","skipTotals"]){
+      if(previous[field]!==record[field]){previous[field]=record[field];changed=true;}
+    }
+    if(previous.dateEstimated&&!record.dateEstimated){
+      previous.date=record.date;
+      previous.dateEstimated=false;
+      changed=true;
+    }
+    if(changed)corrected++;
   }
-  if(added){
-    rows.sort((a,b)=>new Date(b.date)-new Date(a.date));
-    try{persist()}catch(err){rows=rows.filter(r=>!imported.some(x=>x.id===r.id));throw err;}
+  if(added||corrected){
+    updatedRows.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    rows=updatedRows;
+    try{persist()}catch(err){rows=before;throw err;}
   }
   render();
   const auth=imported.filter(r=>r.status==="avtorizacija").length;
-  show("Uvoz končan: "+added+" novih zapisov, "+(imported.length-added)+" že uvoženih."+(auth?" Avtorizacije ("+auth+") niso prištete v porabo.":"")+" Enake zneske ohranimo kot ločene zapise.");
+  show("Uvoz končan: "+added+" novih, "+corrected+" popravljenih, "+(imported.length-added)+" že znanih zapisov."+(auth?" Avtorizacije ("+auth+") niso prištete v porabo.":"")+(added===0?" Če novega plačila ni med zapisi, preveri, ali ga vsebuje izbrana datoteka transakcije.txt.":""));
  }catch(err){show("Uvoz ni uspel: "+String(err.message||err),true);}
  e.target.value="";
 });
